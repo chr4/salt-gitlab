@@ -15,7 +15,7 @@ gitlab-ce:
     - user: root
     - group: root
     - mode: 644
-    - source: salt://{{ slspath }}/gitlab.rb.jinja
+    - source: salt://{{ tpldir }}/gitlab.rb.jinja
     - template: jinja
     - require:
       - pkg: gitlab-ce
