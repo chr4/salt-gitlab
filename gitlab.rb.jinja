@@ -1,20 +1,24 @@
 # vim: ft=ruby
 
 # Additional configuration
-{% set external_url = salt['pillar.get']('gitlab:config:external_url', '') %}
-{% if external_url %}
-external_url {{ external_url }}
-{% endif %}
-
-{% set pages_external_url = salt['pillar.get']('gitlab:config:pages_external_url', '') %}
-{% if pages_external_url %}
-pages_external_url {{ pages_external_url }}
-{% endif %}
-
 {% for key, val in salt['pillar.get']('gitlab:config', '').items() %}
+
+{% if val is string %}
+{{ key }} '{{ val }}'
+{% endif %}
+
+{% if val is number %}
+{{ key }} {{ val }}
+{% endif %}
+
 {% if val is mapping %}
 {% for subkey, subval in val.items() %}
+{% if subval is string %}
+{{ key }}['{{ subkey }}'] =  '{{ subval }}'
+{% else %}
 {{ key }}['{{ subkey }}'] =  {{ subval }}
+{% endif %}
 {%- endfor -%}
 {%- endif -%}
+
 {% endfor %}
