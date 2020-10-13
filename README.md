@@ -25,3 +25,25 @@ cmd.run:
         --executor docker \
         --docker-image alpine
 ```
+
+
+# Gitlab Pages
+
+`gitlab.pages` can be used to configure letsencrypt config file for nginx to listen on port 80 and serve .well-known directory for ACME challenges.
+
+When using this, port 80 shall be disabled in gitlab itself and nginx config shall be added in `gitlab.rb`:
+
+```
+pages_nginx['redirect_http_to_https'] = false
+nginx['redirect_http_to_https'] = false
+nginx['custom_nginx_config'] = "include /var/opt/gitlab/nginx/conf/letsencrypt.conf;"
+```
+
+TLS certificates for required gitlab groups/users can be added by using altnames like in following config:
+
+```
+letsencrypt['alt_names'] = %w(group1.gitlab.pages.tld grpup2.gitlab.pages.tld)
+pages_nginx['ssl_certificate'] = '/etc/gitlab/ssl/gitlab.io.ki.crt'
+pages_nginx['ssl_certificate_key'] = '/etc/gitlab/ssl/gitlab.io.ki.key'
+
+```

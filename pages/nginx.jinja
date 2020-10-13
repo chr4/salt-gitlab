@@ -1,0 +1,19 @@
+# vim: ft=nginx
+
+server {
+    # Listen on IPv4 and IPv6, but do not use ipv6only=off
+    # This is necessary so other server blocks can listen on port 80 as well.
+    listen *:80;
+    listen [::]:80;
+
+    # Serve well-known path for letsencrypt
+    location /.well-known/acme-challenge {
+        alias {{ acme_challenge_dir }};
+        default_type text/plain;
+    }
+
+    # Redirect everything else to https
+    location / {
+        return 301 https://$http_host$request_uri;
+    }
+}
