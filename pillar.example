@@ -1,4 +1,7 @@
 gitlab:
+  # Specify edition: "gitlab-ce" (default) or "gitlab-ee"
+  edition: gitlab-ce
+
   config: |
     # Configure Gitlab to use SSL
     external_url 'https://gitlab.example.com'
