@@ -15,12 +15,28 @@ gitlab-runner-repo:
     - file: /etc/apt/sources.list.d/runner_gitlab-runner.list
     - key_url: https://packages.gitlab.com/gpg.key
 
+# Ensure that the gitlab-runner service terminates gracefully when stopped
+# by systemd. See https://docs.gitlab.com/runner/configuration/init.html#overriding-systemd
+# The long (2h) timeout ensures that started CI jobs are allowed to run to completion.
+/etc/systemd/system/gitlab-runner.service.d/kill.conf:
+  file.managed:
+    - owner: root
+    - group: root
+    - mode: 644
+    - makedirs: True
+    - dir_mode: 755
+    - contents: |
+        [Service]
+        TimeoutStopSec=7200
+        KillSignal=SIGQUIT
 
 # Install the runner
 gitlab-runner:
   pkg.installed:
     - require:
       - pkg: docker
+      # ensure that the gracefully service termination will already affect the initial service run
+      - file: /etc/systemd/system/gitlab-runner.service.d/kill.conf
       # ensure that docker-machine has been deployed
       - file: /usr/local/bin/docker-machine
       # the presence of the following files ensures that docker-machine was initialised correctly
