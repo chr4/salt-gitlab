@@ -1,5 +1,5 @@
 # This state installs a gitlab runner which is designed to act as a bastion node
-# for an autoscaling setup using docker-machine with the openstack driver.
+# for an autoscaling setup using docker-machine.
 # See [https://github.com/chr4/salt-docker] for some useful substates to prepare
 # the required docker base setup. In particular see states
 #   - docker
@@ -16,11 +16,12 @@ gitlab-runner-repo:
     - key_url: https://packages.gitlab.com/gpg.key
 
 
-# Install the runner, but only if docker-machine is present and initialised
+# Install the runner
 gitlab-runner:
   pkg.installed:
     - require:
       - pkg: docker
+      # ensure that docker-machine has been deployed
       - file: /usr/local/bin/docker-machine
       # the presence of the following files ensures that docker-machine was initialised correctly
       - file: /root/.docker/machine/certs/cert.pem
