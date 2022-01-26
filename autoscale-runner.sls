@@ -44,23 +44,23 @@ gitlab-runner:
       - file: /root/.docker/machine/certs/ca.pem
       - file: /root/.docker/machine/certs/key.pem
       - file: /root/.docker/machine/certs/ca-key.pem
-  # ensure the service is down before updating the config below
-  service.dead:
-    - enable: false
+
+# Deploy config.toml from pillar
+/etc/gitlab-runner/config.toml:
+  file.managed:
+    - user: root
+    - group: root
+    - mode: 600
+    - contents_pillar: gitlab-runner:config
     - require:
-      - pkg: gitlab-runner
-
-
-# TODO: deploy config.toml TODO
-#/etc/gitlab-runner/config.toml:
-#  file.managed: []
+        - pkg: gitlab-runner
 
 
 # now that everything is in place, ensure the service is up and running
-#gitlab-runner-service:
-#  service.running:
-#    - name: gitlab-runner
-#    - enable: true
-#    - require:
-#      - pkg: gitlab-runner
-#      - file: /etc/gitlab-runner/config.toml
+gitlab-runner-service:
+  service.running:
+    - name: gitlab-runner
+    - enable: true
+    - require:
+      - pkg: gitlab-runner
+      - file: /etc/gitlab-runner/config.toml
