@@ -20,7 +20,7 @@ gitlab-runner-repo:
 # The long (2h) timeout ensures that started CI jobs are allowed to run to completion.
 /etc/systemd/system/gitlab-runner.service.d/kill.conf:
   file.managed:
-    - owner: root
+    - user: root
     - group: root
     - mode: 644
     - makedirs: True
