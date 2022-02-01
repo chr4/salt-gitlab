@@ -25,3 +25,10 @@ gitlab_repo:
     - name: gitlab-ctl reconfigure
     - onchanges:
       - file: /etc/gitlab/gitlab.rb
+
+# In case /var/opt/gitlab/backups is a mountpoint, we need to make sure permissions are adjusted
+/var/opt/gitlab/backups:
+  file.directory:
+    - user: git
+    - group: root
+    - mode: 0700
