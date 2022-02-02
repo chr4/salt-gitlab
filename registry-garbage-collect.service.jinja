@@ -1,0 +1,6 @@
+[Unit]
+Description=Gitlab Registry garbage collect
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/gitlab-ctl registry-garbage-collect {% if delete_manifests %}-m{% endif %}

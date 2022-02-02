@@ -1,0 +1,9 @@
+[Unit]
+Description=Gitlab Registry automatic garbage collect
+
+[Timer]
+OnCalendar={{ on_calendar }}
+Unit=gitlab-registry-garbage-collect.service
+
+[Install]
+WantedBy=timers.target

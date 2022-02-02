@@ -23,3 +23,12 @@ gitlab:
 
     # Change default theme to light
     gitlab_rails['gitlab_default_theme'] = 3
+
+  registry:
+    garbage_collect:
+      # Delete manifests that are not currenetly referenced via tag
+      # This will set the -m option for "gitlab-ctl registry-garbage-collect"
+      manifests: true
+
+      # Run at a specific time, defaults to 02:00 every night
+      on_calendar: 02:00

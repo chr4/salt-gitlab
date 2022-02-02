@@ -5,6 +5,16 @@ This formula installs and configures [Gitlab Community Edition](https://gitlab.o
 See `pillar.example` for configuration options.
 
 
+## gitlab:registry-garbage-collect
+
+This formula will clean up unused images from Gitlab Registry every night.
+
+It calls `gitlab-ctl registry-garbage-collect` via a systemd service.
+
+You can configure it to also delete untagged manifests and the time it will be run (if needed) via pillars, see [pillar.example](pillar.example) for details.
+
+
+
 # Gitlab CI Runner
 
 `gitlab-runner` can be installed from the official repository using the `gitlab.runner` state.
