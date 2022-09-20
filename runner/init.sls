@@ -31,8 +31,9 @@ gitlab-runner-repo:
     - key_url: https://packages.gitlab.com/gpg.key
 
 gitlab-runner:
-  pkg.installed:
+{# Optionally inject docker dependencies #}
 {% if salt['pillar.get']('gitlab-runner:needs-docker-machine', False) %}
+  pkg.installed:
     - require:
       - pkg: docker
       # ensure that docker-machine has been deployed
@@ -42,7 +43,10 @@ gitlab-runner:
       - file: /root/.docker/machine/certs/ca.pem
       - file: /root/.docker/machine/certs/key.pem
       - file: /root/.docker/machine/certs/ca-key.pem
+{% else %}
+  pkg.installed: []
 {% endif %}
+{# Optionally deploy config #}
 {% if salt['pillar.get']('gitlab-runner:config', none) is not none %}
   file.managed:
     - name: /etc/gitlab-runner/config.toml
