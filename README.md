@@ -19,9 +19,21 @@ You can configure it to also delete untagged manifests and the time it will be r
 
 `gitlab-runner` can be installed from the official repository using the `gitlab.runner` state.
 
-To register a runner with a Gitlab instance, use the following command: `gitlab-runner register`.
+It is possible to optionally deploy a full, possibly pre-registered, runner configuration through `gitlab-runner.config`.
+When omitted, the runner is set up in pristine state and must be registered manually (see below).
+Besides the runner `config.toml` it is also possible to deploy a custom systemd timeout override.
 
-For later reference, here's some example code of howto automate registration. This is not done, as the registration posibilities are pretty vast:
+For the special case where a provided `config.toml` utilises a _docker-machine_ executor there is a separate boolean key `gitlab-runner.docker-machine` that necessarily must be set to `True` such that the underlying docker requirements can be included.
+The injected dependency assumes the presence of exactly the following docker formula: https://github.com/chr4/salt-docker.
+
+## Registering CI Runners
+
+To register a runner with a Gitlab instance, use `gitlab-runner register` to negotiate a fresh runner token and a skeleton `config.toml`.
+The command is interactive, and supports a wide spectrum of options.
+Even more options can then be manually entered/adjusted in the generated config.
+See the [offical runner docs](https://docs.gitlab.com/runner/) for details.
+
+For later reference, here's some example code of how to potentially automate registration. This is not done, as the registration posibilities are pretty vast:
 
 ```yaml
 cmd.run:
