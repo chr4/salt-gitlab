@@ -17,7 +17,7 @@
 #   - docker.machine
 
 {# Optionally inject docker include #}
-{% if salt['pillar.get']('gitlab-runner:needs-docker-machine', False) %}
+{% if salt['pillar.get']('gitlab-runner:docker-machine', False) %}
 include:
   - docker
   - docker.machine
@@ -32,7 +32,7 @@ gitlab-runner-repo:
 
 gitlab-runner:
 {# Optionally inject docker dependencies #}
-{% if salt['pillar.get']('gitlab-runner:needs-docker-machine', False) %}
+{% if salt['pillar.get']('gitlab-runner:docker-machine', False) %}
   pkg.installed:
     - require:
       - pkg: docker
