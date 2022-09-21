@@ -32,3 +32,34 @@ gitlab:
 
       # Run at a specific time, defaults to 02:00 every night
       on_calendar: 02:00
+
+gitlab-runner:
+  # Indicate that the cross-dependency to the docker salt formula is required; defaults to False
+  docker-machine: True
+  # Override the systemd gitlab-runner.service unit timeout to 2h, if absent use systemd default timeout (90s)
+  systemd-timeout-stop-sec: 7200
+  # Deploy a preregistered config, note the runner SECRET_TOKEN generated as part of registration (use appropriate encryption).
+  # This is necessarily a heavily redacted excerpt from a potentially vast config. Please consult official docs.
+  config: |
+    concurrent = 32
+    check_interval = 12
+
+    [[runners]]
+      name = "Runner 1"
+      limit = 25
+      request_concurrency = 1
+      url = "https://gitlab.example.com"
+      token = "SECRET_TOKEN"
+      executor = "docker+machine"
+      [runners.custom_build_dir]
+        ..
+      [runners.cache]
+        ...
+      [runners.docker]
+        ...
+      [runners.machine]
+        ...
+
+   [[runners]]
+     name = "Runner 2"
+     ...
