@@ -61,3 +61,22 @@ gitlab-runner:
     - enable: true
     - require:
       - pkg: gitlab-runner
+
+{# Optionally deploy custom systemd timeout override #}
+{% if salt['pillar.get']('gitlab-runner:systemd-timeout-stop-sec', none) is not none %}
+# Ensure that the gitlab-runner service terminates gracefully when stopped by systemd.
+# See https://docs.gitlab.com/runner/configuration/init.html#overriding-systemd
+/etc/systemd/system/gitlab-runner.service.d/kill.conf:
+  file.managed:
+    - user: root
+    - group: root
+    - mode: 644
+    - makedirs: True
+    - dir_mode: 755
+    - require_in:
+        - pkg: gitlab-runner
+    - contents: |
+        [Service]
+        TimeoutStopSec={{ salt['pillar.get']('gitlab-runner:systemd-timeout-stop-sec') }}
+        KillSignal=SIGQUIT
+{% endif %}
