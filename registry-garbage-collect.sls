@@ -1,5 +1,5 @@
 # Install systemd timer and service for registry garbage collection
-/lib/systemd/system/gitlab-registry-garbage-collect.service:
+/etc/systemd/system/gitlab-registry-garbage-collect.service:
   file.managed:
     - source: salt://{{ tpldir }}/registry-garbage-collect.service.jinja
     - template: jinja
@@ -11,18 +11,18 @@
   cmd.run:
     - name: systemctl daemon-reload
     - onchanges:
-      - file: /lib/systemd/system/gitlab-registry-garbage-collect.service
+      - file: /etc/systemd/system/gitlab-registry-garbage-collect.service
 
 gitlab-registry-garbage-collect.timer:
   service.running:
     - enable: true
     - watch:
-      - file: /lib/systemd/system/gitlab-registry-garbage-collect.timer
+      - file: /etc/systemd/system/gitlab-registry-garbage-collect.timer
     - require:
-      - file: /lib/systemd/system/gitlab-registry-garbage-collect.timer
+      - file: /etc/systemd/system/gitlab-registry-garbage-collect.timer
       - cmd: systemctl daemon-reload
   file.managed:
-    - name: /lib/systemd/system/gitlab-registry-garbage-collect.timer
+    - name: /etc/systemd/system/gitlab-registry-garbage-collect.timer
     - source: salt://{{ tpldir }}/registry-garbage-collect.timer.jinja
     - template: jinja
     - defaults:
@@ -33,4 +33,4 @@ gitlab-registry-garbage-collect.timer:
   cmd.run:
     - name: systemctl daemon-reload
     - onchanges:
-      - file: /lib/systemd/system/gitlab-registry-garbage-collect.timer
+      - file: /etc/systemd/system/gitlab-registry-garbage-collect.timer
