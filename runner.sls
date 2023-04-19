@@ -80,3 +80,14 @@ gitlab-runner:
         TimeoutStopSec={{ salt['pillar.get']('gitlab-runner:systemd-timeout-stop-sec') }}
         KillSignal=SIGQUIT
 {% endif %}
+
+{% if salt['pillar.get']('gitlab-runner:cloud-init', none) is not none %}
+# Deploy cloud-init file for autoscaling instances.
+/etc/gitlab-runner/autoscaler-cloudinit.yaml:
+  file.managed:
+    - user: root
+    - group: root
+    - mode: 644
+    - template: jinja
+    - source: salt://{{ tpldir }}/autoscaler-cloudinit.yaml.jinja
+{% endif %}

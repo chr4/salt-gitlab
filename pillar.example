@@ -38,6 +38,12 @@ gitlab-runner:
   docker-machine: True
   # Override the systemd gitlab-runner.service unit timeout to 2h, if absent use systemd default timeout (90s)
   systemd-timeout-stop-sec: 7200
+  # If set a cloud-init file will be created, which can be used to configure autoscale VMs.
+  cloud-init: |
+    manage_resolv_conf: true
+    resolv_conf:
+      nameservers:
+        - 1.1.1.1
   # Deploy a preregistered config, note the runner SECRET_TOKEN generated as part of registration (use appropriate encryption).
   # This is necessarily a heavily redacted excerpt from a potentially vast config. Please consult official docs.
   config: |
