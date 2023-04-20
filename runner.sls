@@ -10,6 +10,15 @@
 #    executor = "docker+machine"
 #    ...
 #
+# To use the cloud-init created with the gitlab-runner.cloud-init pillar key, you need to set the
+# MachineOptions to use the cloud-init file based on your provider.
+#    [runners.machine]
+#       MachineDriver = "openstack"
+#       MachineOptions = ["openstack-user-data-file=/etc/gitlab-runner/autoscaler-cloudinit.yaml"]
+#
+#       MachineDriver = "amazonec2"
+#       MachineOptions = ["amazonec2-userdata=/etc/gitlab-runner/autoscaler-cloudinit.yaml"]
+#
 # See [https://github.com/chr4/salt-docker] for some useful substates to prepare the required
 # docker base setup. In particular see states
 #   - docker
