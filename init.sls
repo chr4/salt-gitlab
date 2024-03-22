@@ -12,6 +12,19 @@ gitlab_repo:
 {{ edition }}:
   pkg.installed: []
 
+# Deploy signing_key.gpg if options are given in pillar.
+# Make sure it's not existent if not.
+{% if salt['pillar.get']('gitlab:gitaly:signing_key', None) != none %}
+/etc/gitlab/gitaly/signing_key.gpg:
+  file.managed:
+    - user: root
+    - group: root
+    - mode: 600
+    - contents_pillar: gitlab:gitaly:signing_key
+    - require:
+      - pkg: {{ edition }}
+{% endif %}
+
 /etc/gitlab/gitlab.rb:
   file.managed:
     - user: root

@@ -33,6 +33,11 @@ gitlab:
       # Run at a specific time, defaults to 02:00 every night
       on_calendar: 02:00
 
+  gitaly:
+    signing_key:
+      ...
+
+
 gitlab-runner:
   # Indicate that the cross-dependency to the docker salt formula is required; defaults to False
   docker-machine: True
