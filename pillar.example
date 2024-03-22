@@ -24,6 +24,15 @@ gitlab:
     # Change default theme to light
     gitlab_rails['gitlab_default_theme'] = 3
 
+    # Set gitaly signing key
+    gitaly['configuration'] = {
+      git: {
+        committer_name: 'GitLab',
+        committer_email: 'noreply@gitlab.example.com',
+        signing_key: '/etc/gitlab/gitaly-ui.key'
+      },
+    }
+
   registry:
     garbage_collect:
       # Delete manifests that are not currenetly referenced via tag
