@@ -15,7 +15,7 @@ gitlab_repo:
 # Deploy signing_key.gpg if options are given in pillar.
 # Make sure it's not existent if not.
 {% if salt['pillar.get']('gitlab:gitaly:signing_key', None) != none %}
-/etc/gitlab/gitaly/signing_key.gpg:
+/etc/gitlab/gitaly-ui.key:
   file.managed:
     - user: root
     - group: root
