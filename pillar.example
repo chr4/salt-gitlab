@@ -43,8 +43,15 @@ gitlab:
       on_calendar: 02:00
 
   gitaly:
-    signing_key:
+    # SSH signing key
+    signing_key: 'ssh-ed25519 AAAA...'
+
+    # Alternatively using GPG
+    signing_key: |
+      -----BEGIN PGP PRIVATE KEY BLOCK-----
+
       ...
+      -----END PGP PRIVATE KEY BLOCK-----
 
 
 gitlab-runner:
