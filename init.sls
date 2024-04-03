@@ -17,7 +17,7 @@ gitlab_repo:
 {% if salt['pillar.get']('gitlab:gitaly:signing_key', None) != none %}
 /etc/gitlab/gitaly-ui.key:
   file.managed:
-    - user: root
+    - user: git
     - group: root
     - mode: 600
     - contents_pillar: gitlab:gitaly:signing_key
